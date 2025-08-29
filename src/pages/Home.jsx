@@ -1,23 +1,11 @@
 import React from 'react'
+import NavBar from '../components/SideNavBar/NavBar'
 
 const Home = () => {
   return (
-      <div className="flex min-h-screen bg-gray-100">
+      <div className="flex min-h-screen bg-gray-100 w-full">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg p-4">
-        <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
-        <nav className="space-y-4">
-          <a href="#" className="block text-gray-700 hover:text-blue-600">
-            Buyers
-          </a>
-          <a href="#" className="block text-gray-700 hover:text-blue-600">
-            Products
-          </a>
-          <a href="#" className="block text-gray-700 hover:text-blue-600">
-            Settings
-          </a>
-        </nav>
-      </aside>
+        
 
       {/* Main Content */}
       <main className="flex-1 p-8">
