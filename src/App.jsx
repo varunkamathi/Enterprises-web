@@ -17,9 +17,7 @@ function App() {
         {/* Right side content */}
         <div className="flex-1 flex flex-col">
           {/* 🔹 Topbar */}
-          <header className="flex bg-gray-100 shadow justify-end items-center px-6 py-4">
-            <ProfileButton />
-          </header>
+          
 
           {/* 🔹 Page content */}
           <main className="flex-1 p-3 bg-gray-100">

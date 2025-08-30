@@ -1,14 +1,24 @@
-import React from 'react'
-import NavBar from '../components/SideNavBar/NavBar'
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { User } from "lucide-react";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
-      <div className="flex min-h-screen bg-gray-100 w-full">
-      {/* Sidebar */}
-        
+    <div className="flex min-h-screen bg-gray-100 w-full">
+      {/* Profile Icon (Top Right) */}
+      <div className="absolute top-2 p-6 right-6">
+        <div
+          onClick={() => navigate("/profile")}
+          className="flex items-center gap-2 cursor-pointer hover:bg-blue-700 px-3 py-2 rounded-full bg-blue-600"
+        >
+          <User className="text-gray-600" size={22} />
+        </div>
+      </div>
 
       {/* Main Content */}
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-6">
         <h1 className="text-3xl font-bold mb-8">Overview</h1>
 
         {/* Stats Cards */}
@@ -40,7 +50,7 @@ const Home = () => {
         </div>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
