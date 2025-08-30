@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
-import {LayoutDashboard, Users, Package, Settings as Cog } from "lucide-react"; // nice icons
+import {LayoutDashboard, Users, Package, Settings as Cog, User } from "lucide-react"; // nice icons
 
 
 
@@ -9,6 +9,16 @@ const NavBar = () => {
       <aside className="w-64 bg-white shadow-lg p-4">
       <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
         <nav className="space-y-4">
+           <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            isActive
+              ? "flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white"
+              : "flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:text-blue-600"
+          }
+        >
+        <User size={20} /> Profile       
+  </NavLink>
            <NavLink
           to="/"
           className={({ isActive }) =>

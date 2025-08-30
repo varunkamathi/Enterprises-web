@@ -35,19 +35,5 @@ function App() {
   )
 }
 
-// ✅ Small Profile button component
-function ProfileButton() {
-  const navigate = useNavigate();
-
-  return (
-    <div
-      onClick={() => navigate("/profile")}
-      className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 px-3 py-2 rounded-lg"
-    >
-
-      <User className="text-gray-600" size={20} />
-    </div>
-  );
-}
 
 export default App;
