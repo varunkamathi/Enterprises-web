@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AddProductButton from "../components/Add_Product/AddButton";
+import { FaTrash } from "react-icons/fa"; // trash bin icon
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -24,8 +25,37 @@ const Product = () => {
     }
   };
 
-  if (loading) return <div className="flex min-h-screen items-center justify-center">Loading...</div>;
-  if (error) return <div className="flex min-h-screen items-center justify-center text-red-500">Error: {error}</div>;
+  // Delete product by ID
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/products/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error("Failed to delete product");
+
+      // Refresh list
+      fetchProducts();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  if (loading)
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        Loading...
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="flex min-h-screen items-center justify-center text-red-500">
+        Error: {error}
+      </div>
+    );
 
   // Filter products
   const filteredProducts = products.filter(
@@ -65,6 +95,7 @@ const Product = () => {
               <th className="p-2 border">Total Quantity</th>
               <th className="p-2 border">Created By</th>
               <th className="p-2 border">Created At</th>
+              <th className="p-2 border">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -81,6 +112,14 @@ const Product = () => {
                 <td className="p-2 border">{p.createdBy}</td>
                 <td className="p-2 border">
                   {p.createdAt ? new Date(p.createdAt).toLocaleString() : "—"}
+                </td>
+                <td className="p-2 border">
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    className="text-red-600 hover:text-red-800"
+                  >
+                    <FaTrash />
+                  </button>
                 </td>
               </tr>
             ))}
