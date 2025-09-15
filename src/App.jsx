@@ -2,7 +2,7 @@ import Home from './pages/Home'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import NavBar from './components/SideNavBar/NavBar';
 import Buyer from './pages/Buyer';
-import Product from './pages/Produst';
+import Product from './pages/Product';
 import Setting from './pages/Setting';
 import Profile from './components/Profile/Profile'; 
 import { User } from "lucide-react";
@@ -26,7 +26,7 @@ function App() {
               <Route path="/buyers" element={<Buyer />} />
               <Route path="/products" element={<Product />} />
               <Route path="/settings" element={<Setting />} />
-              <Route path="/profile" element={<Profile />} /> {/* ✅ fixed profile route */}
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </main>
         </div>
