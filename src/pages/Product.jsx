@@ -36,7 +36,6 @@ const Product = () => {
 
       if (!response.ok) throw new Error("Failed to delete product");
 
-      // Refresh list
       fetchProducts();
     } catch (err) {
       alert(err.message);
@@ -57,7 +56,7 @@ const Product = () => {
       </div>
     );
 
-  // Filter products
+  // Filter products by search
   const filteredProducts = products.filter(
     (p) =>
       p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -69,7 +68,7 @@ const Product = () => {
     <div className="flex min-h-screen bg-gray-100 w-full p-6">
       <div className="w-full max-w-6xl mx-auto">
         {/* Header with Search + Add Button */}
-        <div className="flex justify-between items-center mb-4 bg-transparent">
+        <div className="flex justify-between items-center mb-4">
           <input
             type="text"
             placeholder="Search products..."
@@ -77,54 +76,69 @@ const Product = () => {
             onChange={(e) => setSearch(e.target.value)}
             className="border border-gray-800 px-3 py-2 w-1/2 rounded-4xl"
           />
-          {/* Pass fetchProducts to refresh list */}
           <AddProductButton onProductAdded={fetchProducts} />
         </div>
 
-        {/* Table */}
-        <table className="w-full border border-gray-300 bg-white shadow-md rounded-lg">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="p-2 border">ID</th>
-              <th className="p-2 border">Name</th>
-              <th className="p-2 border">Category</th>
-              <th className="p-2 border">Description</th>
-              <th className="p-2 border">Status</th>
-              <th className="p-2 border">Size / Weight</th>
-              <th className="p-2 border">Unit</th>
-              <th className="p-2 border">Total Quantity</th>
-              <th className="p-2 border">Created By</th>
-              <th className="p-2 border">Created At</th>
-              <th className="p-2 border">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredProducts.map((p) => (
-              <tr key={p.id} className="text-center">
-                <td className="p-2 border">{p.id}</td>
-                <td className="p-2 border">{p.name}</td>
-                <td className="p-2 border">{p.category}</td>
-                <td className="p-2 border">{p.description}</td>
-                <td className="p-2 border">{p.status}</td>
-                <td className="p-2 border">{p.sizeOrWeight}</td>
-                <td className="p-2 border">{p.unitOfMeasure}</td>
-                <td className="p-2 border">{p.totalQuantity}</td>
-                <td className="p-2 border">{p.createdBy}</td>
-                <td className="p-2 border">
-                  {p.createdAt ? new Date(p.createdAt).toLocaleString() : "—"}
-                </td>
-                <td className="p-2 border">
-                  <button
-                    onClick={() => handleDelete(p.id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    <FaTrash />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {/* Card Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProducts.map((p) => (
+            <div
+              key={p.id}
+              className="bg-white shadow-md rounded-lg p-4 relative"
+            >
+              {/* Delete Button */}
+              <button
+                onClick={() => handleDelete(p.id)}
+                className="absolute top-3 right-3 text-red-600 hover:text-red-800"
+              >
+                <FaTrash />
+              </button>
+
+              {/* Product Image */}
+              <img
+                src={
+                  p.imageUrl
+                    ? p.imageUrl
+                    : "https://via.placeholder.com/300x200?text=No+Image"
+                }
+                alt={p.name}
+                className="w-full h-40 object-cover rounded"
+              />
+
+              {/* Product Info */}
+              <h2 className="text-lg font-bold mb-2">{p.name}</h2>
+              <p className="text-sm text-gray-600 mb-1">
+                <span className="font-semibold">Category:</span> {p.category}
+              </p>
+              <p className="text-sm text-gray-600 mb-1">
+                <span className="font-semibold">Description:</span>{" "}
+                {p.description || "—"}
+              </p>
+              <p className="text-sm text-gray-600 mb-1">
+                <span className="font-semibold">Status:</span> {p.status}
+              </p>
+              <p className="text-sm text-gray-600 mb-1">
+                <span className="font-semibold">Size / Weight:</span>{" "}
+                {p.sizeOrWeight || "—"}
+              </p>
+              <p className="text-sm text-gray-600 mb-1">
+                <span className="font-semibold">Unit:</span> {p.unitOfMeasure}
+              </p>
+              <p className="text-sm text-gray-600 mb-1">
+                <span className="font-semibold">Quantity:</span>{" "}
+                {p.totalQuantity}
+              </p>
+              <p className="text-xs text-gray-500 mt-2">
+                Created By: {p.createdBy || "system"}
+              </p>
+              <p className="text-xs text-gray-500">
+                {p.createdAt
+                  ? new Date(p.createdAt).toLocaleString()
+                  : "Not available"}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

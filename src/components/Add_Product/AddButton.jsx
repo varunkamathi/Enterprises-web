@@ -10,13 +10,27 @@ const AddProductButton = ({ onProductAdded }) => {
     sizeOrWeight: "",
     unitOfMeasure: "PIECES",
     totalQuantity: 0,
+    imageUrl: "", // ✅ added image
   });
+
+  // Reset form
+  const resetForm = () => {
+    setNewProduct({
+      name: "",
+      category: "",
+      description: "",
+      status: "AVAILABLE",
+      sizeOrWeight: "",
+      unitOfMeasure: "PIECES",
+      totalQuantity: 0,
+      imageUrl: "",
+    });
+  };
 
   // Handle Add Product
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
-    // Build final payload
     const payload = {
       ...newProduct,
       createdAt: new Date().toISOString(),
@@ -35,17 +49,9 @@ const AddProductButton = ({ onProductAdded }) => {
       if (!response.ok) throw new Error("Failed to add product");
 
       setShowModal(false);
-      setNewProduct({
-        name: "",
-        category: "",
-        description: "",
-        status: "AVAILABLE",
-        sizeOrWeight: "",
-        unitOfMeasure: "PIECES",
-        totalQuantity: 0,
-      });
+      resetForm();
 
-      // Notify parent to refresh product list
+      // Refresh product list
       onProductAdded();
     } catch (err) {
       alert(err.message);
@@ -57,16 +63,27 @@ const AddProductButton = ({ onProductAdded }) => {
       {/* Add Button */}
       <button
         onClick={() => setShowModal(true)}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-4xl shadow"
+        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-3xl shadow"
       >
         + Add Product
       </button>
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center  backdrop-blur-sm bg-opacity-100">
-          <div className="bg-white p-6 rounded-lg w-96">
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          {/* Overlay */}
+          <div
+            className="absolute inset-0 backdrop-blur-sm bg-opacity-50"
+            onClick={() => {
+              setShowModal(false);
+              resetForm();
+            }}
+          ></div>
+
+          {/* Modal content */}
+          <div className="relative bg-white p-6 rounded-lg w-96 shadow-lg z-10">
             <h2 className="text-xl font-bold mb-4">Add Product</h2>
+
             <form onSubmit={handleAddProduct} className="space-y-3">
               <input
                 type="text"
@@ -120,10 +137,24 @@ const AddProductButton = ({ onProductAdded }) => {
                 }
                 className="border w-full px-3 py-2 rounded"
               />
+              <input
+                type="text"
+                placeholder="Image URL"
+                value={newProduct.imageUrl}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, imageUrl: e.target.value })
+                }
+                className="border w-full px-3 py-2 rounded"
+              />
+
+              {/* Buttons */}
               <div className="flex justify-end space-x-2 mt-4">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => {
+                    setShowModal(false);
+                    resetForm();
+                  }}
                   className="px-4 py-2 rounded bg-gray-400 hover:bg-gray-500 text-white"
                 >
                   Cancel
