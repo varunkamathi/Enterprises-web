@@ -46,7 +46,10 @@ const AddProductButton = ({ onProductAdded }) => {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) throw new Error("Failed to add product");
+      if (!response.ok) {
+  const errorText = await response.text();
+  throw new Error(`Failed to add product: ${errorText}`);
+}
 
       setShowModal(false);
       resetForm();
@@ -54,7 +57,7 @@ const AddProductButton = ({ onProductAdded }) => {
       // Refresh product list
       onProductAdded();
     } catch (err) {
-      alert(err.message);
+      alert(err);
     }
   };
 
@@ -69,107 +72,112 @@ const AddProductButton = ({ onProductAdded }) => {
       </button>
 
       {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          {/* Overlay */}
-          <div
-            className="absolute inset-0 backdrop-blur-sm bg-opacity-50"
+ {showModal && (
+  <div className="fixed inset-0 flex items-center justify-center z-50">
+    {/* Overlay */}
+    <div
+      className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+      onClick={() => {
+        setShowModal(false);
+        resetForm();
+      }}
+    ></div>
+
+    {/* Modal Content */}
+    <div className="relative bg-white/95 p-6 rounded-2xl w-[500px] max-w-lg shadow-2xl z-10 border border-gray-200">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-5 text-center">
+        ➕ Add New Product
+      </h2>
+
+      <form onSubmit={handleAddProduct} className="space-y-4">
+        <input
+          type="text"
+          placeholder="Product Name"
+          value={newProduct.name}
+          onChange={(e) =>
+            setNewProduct({ ...newProduct, name: e.target.value })
+          }
+          className="border border-gray-300 w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          required
+        />
+        <select
+  value={newProduct.category}
+  onChange={(e) =>
+    setNewProduct({ ...newProduct, category: e.target.value })
+  }
+  className="border border-gray-300 w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+  required
+>
+  <option value="">Select Category</option>
+  <option value="STATIONARY">STATIONARY</option>
+  <option value="GROCERY">GROCERY</option>
+  <option value="GENERAL_STORE">GENERAL STORE</option>
+</select>
+
+        <textarea
+          placeholder="Description"
+          value={newProduct.description}
+          onChange={(e) =>
+            setNewProduct({ ...newProduct, description: e.target.value })
+          }
+          className="border border-gray-300 w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+        <input
+          type="text"
+          placeholder="Size / Weight"
+          value={newProduct.sizeOrWeight}
+          onChange={(e) =>
+            setNewProduct({ ...newProduct, sizeOrWeight: e.target.value })
+          }
+          className="border border-gray-300 w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+        <input
+          type="number"
+          placeholder="Total Quantity"
+          value={newProduct.totalQuantity}
+          onChange={(e) =>
+            setNewProduct({
+              ...newProduct,
+              totalQuantity: Number(e.target.value),
+            })
+          }
+          className="border border-gray-300 w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+        <input
+          type="text"
+          placeholder="Image URL"
+          value={newProduct.imageUrl}
+          onChange={(e) =>
+            setNewProduct({ ...newProduct, imageUrl: e.target.value })
+          }
+          className="border border-gray-300 w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+
+        {/* Buttons */}
+        <div className="flex justify-end gap-3 pt-3">
+          <button
+            type="button"
             onClick={() => {
               setShowModal(false);
               resetForm();
             }}
-          ></div>
-
-          {/* Modal content */}
-          <div className="relative bg-white p-6 rounded-lg w-96 shadow-lg z-10">
-            <h2 className="text-xl font-bold mb-4">Add Product</h2>
-
-            <form onSubmit={handleAddProduct} className="space-y-3">
-              <input
-                type="text"
-                placeholder="Name"
-                value={newProduct.name}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, name: e.target.value })
-                }
-                className="border w-full px-3 py-2 rounded"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Category"
-                value={newProduct.category}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, category: e.target.value })
-                }
-                className="border w-full px-3 py-2 rounded"
-                required
-              />
-              <textarea
-                placeholder="Description"
-                value={newProduct.description}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, description: e.target.value })
-                }
-                className="border w-full px-3 py-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="Size / Weight"
-                value={newProduct.sizeOrWeight}
-                onChange={(e) =>
-                  setNewProduct({
-                    ...newProduct,
-                    sizeOrWeight: e.target.value,
-                  })
-                }
-                className="border w-full px-3 py-2 rounded"
-              />
-              <input
-                type="number"
-                placeholder="Total Quantity"
-                value={newProduct.totalQuantity}
-                onChange={(e) =>
-                  setNewProduct({
-                    ...newProduct,
-                    totalQuantity: Number(e.target.value),
-                  })
-                }
-                className="border w-full px-3 py-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="Image URL"
-                value={newProduct.imageUrl}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, imageUrl: e.target.value })
-                }
-                className="border w-full px-3 py-2 rounded"
-              />
-
-              {/* Buttons */}
-              <div className="flex justify-end space-x-2 mt-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowModal(false);
-                    resetForm();
-                  }}
-                  className="px-4 py-2 rounded bg-gray-400 hover:bg-gray-500 text-white"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
+            className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800 transition"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium shadow-md hover:from-blue-600 hover:to-blue-800 transition"
+          >
+            Save
+          </button>
         </div>
-      )}
+      </form>
+    </div>
+  </div>
+)}
+
+
     </>
   );
 };
