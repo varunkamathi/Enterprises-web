@@ -12,6 +12,8 @@ const AddProductButton = ({ onProductAdded }) => {
     totalQuantity: 0,
     imageUrl: "", // ✅ added image
   });
+    const API_URL = import.meta.env.VITE_API_URL;
+
 
   // Reset form
   const resetForm = () => {
@@ -40,7 +42,7 @@ const AddProductButton = ({ onProductAdded }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/products", {
+      const response = await fetch(`${API_URL}/products`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

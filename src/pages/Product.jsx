@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import AddProductButton from "../components/Add_Product/AddButton";
 import { FaTrash, FaEdit } from "react-icons/fa";
 
+
 const Product = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
 
   // For Edit Modal
   const [showModal, setShowModal] = useState(false);
@@ -18,7 +22,7 @@ const Product = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/products");
+      const response = await fetch(`${API_URL}/products`);
       if (!response.ok) throw new Error("Failed to fetch products");
       const data = await response.json();
       setProducts(data);
