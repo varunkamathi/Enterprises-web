@@ -1,7 +1,7 @@
 import Home from './pages/Home'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import NavBar from './components/SideNavBar/NavBar';
-import Buyer from './pages/Buyer';
+import Buyer from './pages/CustomerAccount';
 import Product from './pages/Product';
 import Setting from './pages/Setting';
 import Profile from './components/Profile/Profile'; 
